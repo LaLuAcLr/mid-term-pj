@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include "Implicant.h"
 using namespace std;
 
 namespace Tt{

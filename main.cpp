@@ -14,7 +14,8 @@ int main() {
     cout << "Enter num: ";
     cin >> n;
     string t = expr_to_truthtable(n, s);
-    cout << t;
-    cout << truthtable_to_expr(t);
+    cout << t << endl;
+    string x = "11101110";
+    cout << "ans: " << truthtable_to_expr(x) << endl;;
     return 0;
 }

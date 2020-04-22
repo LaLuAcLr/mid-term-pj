@@ -20,10 +20,12 @@ namespace Ct {
         int& get_one_num();
         int get_one_num() const;
 
+        string output_string();
 
         friend bool operator<(const Term&, const Term&);
         friend int combine_term_pos(const Term&, const Term&);
         friend Term combine_term(const Term&, const Term&, int);
+        friend set<Term> solve_petrick(const set<int>& min_term_index, const set<Term>& TermPool);
     private:
         bool dont_care;
         MBinCode bin_code;
@@ -35,6 +37,9 @@ namespace Ct {
     int get_var_num(const string&);
     set<Term> input_truthtable(int, const string&);
     MBinCode min_term2bin_code(int, int);
+    set<Term> solve_QM(int, const set<Term>&);
+    set<Term>& remove_dont_care(set<Term>&);
+    set<int> min_term_index(const string&);
 
 }
 

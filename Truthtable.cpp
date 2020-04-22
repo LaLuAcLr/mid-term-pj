@@ -11,7 +11,7 @@ namespace Tt {
         int k = 0;
         bool flg = true;
         for (int i=0; i<256; i++, k++) {
-            if (k == n + 1) {
+            if (k == pow(2, n-1)) {
                 flg = !flg;
                 k = 0;
             }
@@ -136,7 +136,7 @@ namespace Tt {
 
         return Truthtable();
     }
-}
+}   // namespace Tt
 
 string expr_to_truthtable(int n, const string& expr) {
     return Tt::calc(Tt::pre_process(expr)).output_to_string(n);
