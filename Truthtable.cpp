@@ -80,10 +80,19 @@ namespace Tt {
         return ans;
     }
 
-    string pre_process(const string& str) {     // remove space
+    string pre_process(int n, const string& str) {     // remove space
         string cp;
         cp = regex_replace(str, regex(" "), "");
         if (cp.empty()) throw NoInput{};
+        if (regex_search(cp, regex("[^A-H()|^&~]")))
+            throw InvalidInput{};
+        regex err("\\w{2}|[|^&]{2}|~[|^&]|^[|^&]|[|^&]$|[|^&~]\\)|\\([|^&]|\\(\\)|\\)\\(|\\)~|\\w\\(|\\)\\w");
+        if (regex_search(cp, err))
+            throw InvalidInput{};
+        for (auto i : cp) {
+            if (i <= 'H' && i >= 'A' && i-n>='A')
+                throw ExtraVar{};
+        }
         return cp;
     }
 
@@ -132,12 +141,12 @@ namespace Tt {
         if (expr.size() == 1)
             return Truthtable(VarNum(expr[0] - 'A'));
         else
-            throw InvalidInput{};
+            throw BracketError{};
 
         return Truthtable();
     }
 }   // namespace Tt
 
 string expr_to_truthtable(int n, const string& expr) {
-    return Tt::calc(Tt::pre_process(expr)).output_to_string(n);
+    return Tt::calc(Tt::pre_process(n, expr)).output_to_string(n);
 }

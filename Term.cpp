@@ -8,18 +8,15 @@ using namespace std;
 using uint = unsigned int;
 
 namespace Ct {
-    Term::Term(int n, int value, bool dont_care) {
-        dont_care = dont_care;
+    Term::Term(int n, int value, bool dc) {
+        dont_care = dc;
         bin_code = min_term2bin_code(n, value);
         combination.insert(value);
         one_num = 0;
         for (uint i=0; i<bin_code.size(); i++) {
-            cout << bin_code[i];
             if (bin_code[i] == 1)
                 one_num++;
         }
-        cout << '\t' << one_num;
-        cout << endl;
     }
 
     bool& Term::get_dont_care() {
@@ -84,8 +81,18 @@ namespace Ct {
 
     string pre_process(const string& str) {
         string cp;
-        cp = regex_replace(str, regex(","), "");
+        cp = regex_replace(str, regex("[ ,]"), "");
         if (cp.empty()) throw NoInput{};
+        if (regex_search(cp, regex("[^10d]")))
+            throw InvalidInput{};
+        vector<int> len;
+        for (int i = 0; i <= 8; i++)
+            len.push_back(static_cast<int>(pow(2, i)));
+        bool flg = 0;
+        for (uint i = 0; i < len.size(); i++) {
+            if (cp.size() == len[i]) flg = 1;
+        }
+        if (flg == 0) throw StrLenError{};
         return cp;
     }
 
@@ -237,66 +244,24 @@ namespace Ct {
 
 string truthtable_to_expr(const string& truth_table) {
     string tt_processed = Ct::pre_process(truth_table);
-    cout << "process: " << tt_processed << endl;
     int nVar = Ct::get_var_num(tt_processed);
     set<int> IndexPool = Ct::min_term_index(tt_processed);
-    cout << "varnum: " << nVar << endl;
-    cout << "indexpool: ";
-    set<int>::iterator it;
-    for (it=IndexPool.begin(); it!=IndexPool.end(); it++)
-        cout << *it << '\t';
-    cout << endl;
-    cout << "ip\n";
     set<Ct::Term> TermPool = Ct::input_truthtable(nVar, tt_processed);
-    cout << "termpool: " << TermPool.size() << endl;
-    cout << "tp" << endl;
 
     bool all_dont_care = true;
     for (Ct::Term i : TermPool) {
-        if (!i.get_dont_care())
+        if (!i.get_dont_care()) {
             all_dont_care = false;
             break;
+        }
     }
     if (all_dont_care || TermPool.size() == 0)
         return "0";
     else if (TermPool.size() == pow(2, nVar))
         return "1";
     set<Ct::Term> Pool1 = Ct::solve_QM(nVar, TermPool);
-    cout << "pool1: " << Pool1.size() << endl;
     set<Ct::Term> Pool2 = Ct::remove_dont_care(Pool1);
-    cout << "pool2: " << Pool2.size() << endl;
-    cout << "pool2\n";
-    for (auto i : Pool2) {
-        for (auto k : i.get_combination()) {
-            cout << k << '\t';
-        }
-        cout << '\n';
-    }
-    for (auto i: Pool2) {
-        for (uint k=0; k<i.get_bin_code().size(); k++) {
-            if (i.get_bin_code()[k] == 1) cout << '1';
-            else if (i.get_bin_code()[k] == 0) cout << '0';
-            else cout << '-';
-        }
-        cout << endl;
-    }
     set<Ct::Term> Pool3 = Ct::solve_petrick(IndexPool, Pool2);
-    cout << "pool3\n";
-    cout << "pool3.size: " << Pool3.size() << endl;
-    for (auto i : Pool3) {
-        for (auto k : i.get_combination()) {
-            cout << k << '\t';
-        }
-        cout << '\n';
-    }
-    for (auto i: Pool3) {
-        for (uint k=0; k<i.get_bin_code().size(); k++) {
-            if (i.get_bin_code()[k] == 1) cout << '1';
-            else if (i.get_bin_code()[k] == 0) cout << '0';
-            else cout << '-';
-        }
-        cout << endl;
-    }
     string ans = Ct::output_expr(Pool3);
     return ans;
 }
