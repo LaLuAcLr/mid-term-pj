@@ -46,6 +46,14 @@ namespace Ct {
         return combination;
     }
 
+    MBinCode& Term::get_bin_code() {
+        return bin_code;
+    }
+
+    MBinCode Term::get_bin_code() const {
+        return bin_code;
+    }
+
     string Term::output_string() {
         string ans;
         size_t already_output_var = 0;
@@ -56,12 +64,12 @@ namespace Ct {
         }
         int n = bin_code.size();
         for (uint i=0; i<bin_code.size(); i++) {
-            if (bin_code[n - i - 1] != -1) {
+            if (bin_code[i] != -1) {
                 already_output_var++;
-                if (bin_code[n - i - 1] == 1) {
+                if (bin_code[i] == 1) {
                     ans.push_back('A' + i);
                 }
-                else if (bin_code[n - i - 1] == 0) {
+                else if (bin_code[i] == 0) {
                     ans.push_back('(');
                     ans.push_back('~');
                     ans.push_back('A' + i);
@@ -127,13 +135,13 @@ namespace Ct {
             return true;
         else {
             for (uint i=0; i<a.bin_code.size(); i++) {
-                if (a.bin_code[i] != b.bin_code[i]) {   // 0<1, 0<-1, -1<1
+                if (a.bin_code[i] != b.bin_code[i]) {   // 0<1, 0<-1, 1<-1
                     if (a.bin_code[i] == 0)
                         return true;
                     else if (b.bin_code[i] == 0)
                         return false;
                     else
-                        return a.bin_code[i] < 0;
+                        return a.bin_code[i] > 0;
                 }
             }
         }
@@ -264,6 +272,14 @@ string truthtable_to_expr(const string& truth_table) {
         }
         cout << '\n';
     }
+    for (auto i: Pool2) {
+        for (uint k=0; k<i.get_bin_code().size(); k++) {
+            if (i.get_bin_code()[k] == 1) cout << '1';
+            else if (i.get_bin_code()[k] == 0) cout << '0';
+            else cout << '-';
+        }
+        cout << endl;
+    }
     set<Ct::Term> Pool3 = Ct::solve_petrick(IndexPool, Pool2);
     cout << "pool3\n";
     cout << "pool3.size: " << Pool3.size() << endl;
@@ -272,6 +288,14 @@ string truthtable_to_expr(const string& truth_table) {
             cout << k << '\t';
         }
         cout << '\n';
+    }
+    for (auto i: Pool3) {
+        for (uint k=0; k<i.get_bin_code().size(); k++) {
+            if (i.get_bin_code()[k] == 1) cout << '1';
+            else if (i.get_bin_code()[k] == 0) cout << '0';
+            else cout << '-';
+        }
+        cout << endl;
     }
     string ans = Ct::output_expr(Pool3);
     return ans;

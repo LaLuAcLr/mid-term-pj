@@ -1,0 +1,58 @@
+
+{
+    "files.defaultLanguage": "c++", // ctrl+N新建文件后默认的语言
+    //"editor.formatOnType": true,  // 输入分号(C/C++的语句结束标识)后自动格式化当前这一行的代码
+    "editor.suggest.snippetsPreventQuickSuggestions": false, // clangd的snippets有很多的跳转点，不用这个就必须手动触发Intellisense了
+    "editor.acceptSuggestionOnEnter": "off", // 我个人的习惯，按回车时一定是真正的换行，只有tab才会接受Intellisense
+    // "editor.snippetSuggestions": "top", // （可选）snippets显示在补全列表顶端，默认是inline
+
+    "code-runner.runInTerminal": true, // 设置成false会在“输出”中输出，无法输入
+    "code-runner.executorMap": {
+        "c": "cd $dir && gcc '$fileName' -o '$fileNameWithoutExt.exe' -Wall -g -O2 -static-libgcc -std=c11 -fexec-charset=GBK && &'$dir$fileNameWithoutExt'",
+        "cpp": "cd $dir && g++ '$fileName' -o '$fileNameWithoutExt.exe' -Wall -g -O2 -static-libgcc -std=c++17 -fexec-charset=GBK && &'$dir$fileNameWithoutExt'"
+        // "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt.exe -Wall -g -O2 -static-libgcc -std=c11 -fexec-charset=GBK && $dir$fileNameWithoutExt",
+        // "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt.exe -Wall -g -O2 -static-libgcc -std=c++17 -fexec-charset=GBK && $dir$fileNameWithoutExt"
+    }, // 右键run code时运行的命令；未注释的仅适用于PowerShell（Win10默认），文件名中有空格也可以编译运行；注释掉的适用于cmd（win7默认），PS和bash也能用，但文件名中有空格时无法运行
+    "code-runner.saveFileBeforeRun": true, // run code前保存
+    "code-runner.preserveFocus": true,     // 若为false，run code后光标会聚焦到终端上。如果需要频繁输入数据可设为false
+    "code-runner.clearPreviousOutput": false, // 每次run code前清空属于code runner的终端消息，默认false
+    "code-runner.ignoreSelection": true,   // 默认为false，效果是鼠标选中一块代码后可以单独执行，但C是编译型语言，不适合这样用
+
+    "C_Cpp.clang_format_sortIncludes": true, // 格式化时调整include的顺序（按字母排序）
+
+
+
+//"editor.fontFamily": "等距更纱黑体 SC", // 控制编辑器字体
+//"editor.fontSize": 25, // 同上
+//"editor.fontLigatures": true, // 连体字，效果不太好形容，见 https://typeof.net/Iosevka 最后一部分
+//"editor.minimap.enabled": false, // 我个人不用minimap，就是右边那个东西
+"editor.dragAndDrop": false, // 选中文字后，可以拖动它们调整位置。我是不需要
+"editor.cursorSmoothCaretAnimation": true, // 移动光标时变得平滑
+"editor.smoothScrolling": true, // 滚动平滑，不过效果很微弱
+
+"files.trimTrailingWhitespace": true, // 保存时，删除每一行末尾的空格
+"files.insertFinalNewline": true, // 保存后文件最末尾加一整行空行，Linux下的习惯
+"files.autoGuessEncoding": false, // 启用后，会在打开文件时尝试猜测字符集编码。我关闭的理由见6，默认也是禁用的
+
+//"workbench.colorTheme": "One Dark Pro", // 主题
+//"workbench.colorCustomizations": {
+//      "activityBar.foreground": "#39C5BB" // 自定义颜色；想定义其它位置参见官方文档
+//},
+"workbench.settings.useSplitJSON": true, // 恢复手动编辑时的两列设置
+//"window.zoomLevel": 0.2, // 整体放大
+
+//"git.enabled": false, // 如果你不用git，可以考虑关闭它
+//"git.ignoreMissingGitWarning": true, // 同上
+
+"[c]": {
+    // "files.encoding": "gbk" // 这样的格式可以对指定后缀的文件应用设置，如果你实在想用gbk，就这样设置吧。cpp同理。
+},
+"files.associations": {
+    "deque": "cpp",
+    "string": "cpp",
+    "vector": "cpp",
+    "*.tcc": "cpp",
+    "iostream": "cpp",
+    "ostream": "cpp"
+},
+}

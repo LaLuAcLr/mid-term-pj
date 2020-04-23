@@ -19,6 +19,8 @@ namespace Ct {
         set<int> get_combination() const;
         int& get_one_num();
         int get_one_num() const;
+        MBinCode& get_bin_code();
+        MBinCode get_bin_code() const;
 
         string output_string();
 

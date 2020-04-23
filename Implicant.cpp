@@ -22,10 +22,20 @@ namespace Ct {
     }
 
     ImplicantTable& ImplicantTable::operator*=(const ImplicantTable& it) {
+        set<TBinCode> ans;
         for (auto i : this->m_bin_code) {
             for (auto k : it.m_bin_code) {
-                this->m_bin_code.insert(i+k);
+                ans.insert(i+k);
             }
+        }
+        this->m_bin_code = ans;
+        cout << "test on mult:\n";
+        for (auto i: this->m_bin_code) {
+            for (uint k=0; k<i.size(); k++) {
+                if (i[k]) cout << '1';
+                else cout << '0';
+            }
+            cout << endl;
         }
         return *this;
     }
@@ -149,6 +159,14 @@ namespace Ct {
             }
         }
         ImplicantTable& ansImplicant = ImplicantTable_Vector[0];
+        cout << "ansimplicant_pre\n";
+        for (auto i: ansImplicant.m_bin_code) {
+                for (uint k=0; k<i.size(); k++) {
+                    if (i[k]) cout << '1';
+                    else cout << '-';
+                }
+                cout << endl;
+            }
         for (uint i=1; i<ImplicantTable_Vector.size(); i++) {
             ansImplicant *= ImplicantTable_Vector[i];
             cout << "mark\n";

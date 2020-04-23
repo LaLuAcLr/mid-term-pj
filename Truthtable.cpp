@@ -11,7 +11,7 @@ namespace Tt {
         int k = 0;
         bool flg = true;
         for (int i=0; i<256; i++, k++) {
-            if (k == pow(2, n-1)) {
+            if (k == pow(2, n)) {
                 flg = !flg;
                 k = 0;
             }
