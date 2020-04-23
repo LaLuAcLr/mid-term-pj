@@ -15,7 +15,6 @@ namespace Ct {
         ImplicantTable&         operator*=          (const ImplicantTable&);
         void                    simplify_tab        ();
         TBinCode                simplest_bin_code   ();
-        friend set<Term> solve_petrick(const set<int>&, const set<Term>&);
     private:
         set<TBinCode>           m_bin_code;
     };

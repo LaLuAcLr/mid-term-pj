@@ -29,7 +29,6 @@ namespace Ct {
         friend bool operator<           (const Term&, const Term&);
         friend int  combine_term_pos    (const Term&, const Term&);
         friend Term combine_term        (const Term&, const Term&, int);
-        friend set<Term> solve_petrick  (const set<int>& min_term_index, const set<Term>& TermPool);
     private:
         bool        dont_care;
         MBinCode    bin_code;

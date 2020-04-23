@@ -259,6 +259,7 @@ string truthtable_to_expr(const string& truth_table) {
         return "0";
     else if (TermPool.size() == pow(2, nVar))
         return "1";
+
     set<Ct::Term> Pool1 = Ct::solve_QM(nVar, TermPool);
     set<Ct::Term> Pool2 = Ct::remove_dont_care(Pool1);
     set<Ct::Term> Pool3 = Ct::solve_petrick(IndexPool, Pool2);
