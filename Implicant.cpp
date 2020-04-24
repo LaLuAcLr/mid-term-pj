@@ -78,7 +78,7 @@ namespace Ct {
         return true;
     }
 
-    set<Term> bin_code2TermPool(TBinCode bin_code, const vector<Term>& Term_Row) {
+    set<Term> bin_code2ImplicantPool(TBinCode bin_code, const vector<Term>& Term_Row) {
         set<Term> ans;
         int n = bin_code.size();
         for (uint i=0; i<bin_code.size(); i++) {
@@ -89,17 +89,17 @@ namespace Ct {
         return ans;
     }
 
-    set<Term> solve_petrick(const set<int>& min_term_index, const set<Term>& TermPool) {
-        if (TermPool.size() == 1)
-            return TermPool;
-        vector<Term> TermVector_Row;   // index terms
-        for (auto i : TermPool)
-            TermVector_Row.push_back(i);
+    set<Term> solve_petrick(const set<int>& min_term_index, const set<Term>& ImplicantPool) {
+        if (ImplicantPool.size() == 1)
+            return ImplicantPool;
+        vector<Term> ImplicantVector_Row;   // index terms
+        for (auto i : ImplicantPool)
+            ImplicantVector_Row.push_back(i);
         vector<set<int>> ImplicantVectors;
         for (auto i : min_term_index) {
             set<int> ImplicantSet_Column;  // re-allocate rows into columns
-            for (uint j=0; j<TermVector_Row.size(); j++) {
-                for (auto k : TermVector_Row[j].get_combination()) {
+            for (uint j=0; j<ImplicantVector_Row.size(); j++) {
+                for (auto k : ImplicantVector_Row[j].get_combination()) {
                     if (k == i) ImplicantSet_Column.insert(j);
                 }
             }
@@ -111,7 +111,7 @@ namespace Ct {
             for (auto j : ImplicantVectors[i]) {
                 Combination_Vector.push_back(j);
             }
-            ImplicantTable t(Combination_Vector, TermVector_Row.size());
+            ImplicantTable t(Combination_Vector, ImplicantVector_Row.size());
             ImplicantTable_Vector.push_back(t);
         }
         ImplicantTable& ansImplicant = ImplicantTable_Vector[0];
@@ -120,20 +120,20 @@ namespace Ct {
             ansImplicant.simplify_tab();
         }
         TBinCode ansBinCode = ansImplicant.simplest_bin_code();
-        set<Term> ansTermPool = bin_code2TermPool(ansBinCode, TermVector_Row);
-        return ansTermPool;
+        set<Term> ansImplicantPool = bin_code2ImplicantPool(ansBinCode, ImplicantVector_Row);
+        return ansImplicantPool;
     }
 
-    string output_expr(const set<Term>& ansTermPool) {
+    string output_expr(const set<Term>& ansImplicantPool) {
         string ans;
-        if (ansTermPool.size() > 0) {
-            for (auto i : ansTermPool) {
+        if (ansImplicantPool.size() > 0) {
+            for (auto i : ansImplicantPool) {
                 ans.append(i.output_string());
                 ans.push_back('|');
             }
             ans.erase(ans.end() - 1);
         }
-        if (ansTermPool.size() == 1 && ans.size() == 4) {
+        if (ansImplicantPool.size() == 1 && ans.size() == 4) {
             ans.erase(ans.begin());
             ans.erase(ans.end() - 1);
         }
